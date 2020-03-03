@@ -11,12 +11,30 @@ Sub main()
     '勝敗表を読み込む
     Dim result As Object
     Set result = getResult(original)
+    
+    '使用するデータを選別する
+    Set result = filter(result)
 
     '出力
     Dim actual As Worksheet
     Set actual = Worksheets("actual")
     Call output(actual, result)
 End Sub
+
+Function filter(ByRef result As Object) As Object
+    'データから使用しないデータを取り除く
+    For Each user In result
+        For Each opponent In result(user)
+            Dim tmp As Variant
+            tmp = Split(result(user)(opponent), ",")
+            If 0 >= UBound(tmp) - LBound(tmp) Then
+                '2戦以上の対戦がない場合は記録を消す
+                result(user).Remove opponent
+            End If
+        Next opponent
+    Next user
+    Set filter = result
+End Function
 
 'シートの存在チェック
 Function existsSheet(ByVal sheetName As String) As Boolean
@@ -122,3 +140,4 @@ Sub output(ByRef actual As Worksheet, ByRef result As Object)
         Next opponent
     Next user
 End Sub
+
