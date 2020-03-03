@@ -22,6 +22,17 @@ Sub main()
 End Sub
 
 Function filter(ByRef result As Object) As Object
+    'データから使用しないデータを取り除く
+    For Each user In result
+        For Each opponent In result(user)
+            Dim tmp As Variant
+            tmp = Split(result(user)(opponent), ",")
+            If 0 >= UBound(tmp) - LBound(tmp) Then
+                '2戦以上の対戦がない場合は記録を消す
+                result(user).Remove opponent
+            End If
+        Next opponent
+    Next user
     Set filter = result
 End Function
 
