@@ -11,12 +11,19 @@ Sub main()
     '勝敗表を読み込む
     Dim result As Object
     Set result = getResult(original)
+    
+    '使用するデータを選別する
+    Set result = filter(result)
 
     '出力
     Dim actual As Worksheet
     Set actual = Worksheets("actual")
     Call output(actual, result)
 End Sub
+
+Function filter(ByRef result As Object) As Object
+    Set filter = result
+End Function
 
 'シートの存在チェック
 Function existsSheet(ByVal sheetName As String) As Boolean
@@ -122,3 +129,4 @@ Sub output(ByRef actual As Worksheet, ByRef result As Object)
         Next opponent
     Next user
 End Sub
+
